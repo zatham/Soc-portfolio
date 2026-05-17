@@ -1,0 +1,46 @@
+# WebStrike - My First CyberDefender Lab
+
+**Platform:** CyberDefender | **Difficulty:** Easy
+**Category:** Network Forensics | **Date:** May 2026
+
+## What Was This About?
+Someone uploaded a malicious file to a company web server.
+The network team captured the traffic and my job was to 
+dig through the PCAP file and figure out what happened.
+
+## Tools I Used
+- Wireshark (to analyze the network traffic)
+- ipgeolocation.io (to track where the attacker was from)
+
+## What I Did
+I started by opening the PCAP file in Wireshark. I filtered 
+for HTTP GET requests to find the attacker's IP address, then 
+looked it up on ipgeolocation.io which showed the attack came 
+from Tianjin, China.
+
+Next I looked at the HTTP headers and found the attacker's 
+User-Agent which told me they were running Linux with Firefox.
+
+I then filtered for HTTP POST requests which is how file 
+uploads happen. Following the HTTP stream showed me a file 
+called image.jpg.php was uploaded — a classic trick where 
+attackers disguise a PHP web shell as an image.
+
+The web shell was uploaded to /reviews/uploads/ and was used 
+to open a reverse shell back to the attacker on port 8080.
+Finally I found they were trying to steal the passwd file.
+
+## What I Found
+- Attack came from Tianjin, China
+- Attacker used Linux with Firefox 115
+- Web shell uploaded: image.jpg.php
+- Upload folder: /reviews/uploads/
+- Reverse shell port: 8080
+- File they tried to steal: passwd
+
+## What I Learned
+This was my first time analyzing a real attack in Wireshark.
+I learned how attackers disguise malicious files, how reverse 
+shells work, and how to spot data exfiltration in network 
+traffic. Filtering HTTP streams in Wireshark was really 
+eye-opening.
